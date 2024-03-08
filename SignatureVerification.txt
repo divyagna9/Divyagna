@@ -1,0 +1,48 @@
+clc
+close all
+clear all
+a=imread('C:\Users\ADMIN\Desktop\bs\ref1.jpg');
+grayA=rgb2gray(a);
+[rowA,colA,~]=size(grayA);
+10
+b1=imread('C:\Users\ADMIN\Desktop\bs\compare2.jpg');
+grayB1=rgb2gray(b1);
+[rowB1,colB1,~]=size(grayB1); 
+if rowA>=rowB1
+ if colA>colB1
+ grayA=imresize(grayA,[rowB1 colB1]);
+ else
+ grayA=imresize(grayA,[rowB1 colB1]);
+ grayB1=imresize(grayB1,[rowB1,colB1]);
+ end
+end
+ if rowA<rowB1
+ if colA<colB1
+ grayB1=imresize(grayA,[rowA colA]);
+ else
+ grayA=imresize(grayA,[rowA colB1]);
+ grayB1=imresize(grayB1,[rowA colB1]);
+ end
+end
+subplot(1,3,1)
+imshow(grayA)
+title("Reference Signature");
+subplot(1,3,2)
+imshow(grayB1)
+title("Test Signature-1");
+[ssimval1,ssimmap1] =ssim(grayB1,grayA);
+subplot(1,3,3)
+imshow(ssimmap1,[])
+title(num2str(ssimval1));
+11
+if ssimval1>0.9;
+ disp('valid')
+else if ssimval1>0.5
+ disp('somewhat similar')
+ else if ssimval1>0.4
+ disp('different')
+ else
+ disp('very different,possible forgery')
+ end
+end
+end
